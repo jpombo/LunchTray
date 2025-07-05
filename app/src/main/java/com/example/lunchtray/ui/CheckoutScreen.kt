@@ -30,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -87,11 +88,18 @@ fun CheckoutScreen(
                 .padding(dimensionResource(R.dimen.padding_medium)),
             horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
         ){
-            OutlinedButton(modifier = Modifier.weight(1f), onClick = onCancelButtonClicked) {
+            OutlinedButton(
+                modifier = Modifier
+                    .weight(1f)
+                    .testTag(stringResource(R.string.cancel)),
+                onClick = onCancelButtonClicked
+            ) {
                 Text(stringResource(R.string.cancel).uppercase())
             }
             Button(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .testTag(stringResource(R.string.submit)),
                 onClick = onNextButtonClicked
             ) {
                 Text(stringResource(R.string.submit).uppercase())
@@ -126,7 +134,7 @@ fun OrderSubCost(
     )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun CheckoutScreenPreview() {
     CheckoutScreen(

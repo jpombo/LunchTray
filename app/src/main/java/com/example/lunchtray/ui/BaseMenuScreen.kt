@@ -23,6 +23,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
+import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.RadioButton
@@ -34,6 +36,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.example.lunchtray.R
@@ -92,7 +95,8 @@ fun MenuItemRow(
     ) {
         RadioButton(
             selected = selectedItemName == item.name,
-            onClick = onClick
+            onClick = onClick,
+            modifier = Modifier.testTag(item.name)
         )
         Column(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
@@ -109,9 +113,10 @@ fun MenuItemRow(
                 text = item.getFormattedPrice(),
                 style = MaterialTheme.typography.bodyMedium
             )
-            Divider(
+            HorizontalDivider(
+                modifier = Modifier.padding(bottom = dimensionResource(R.dimen.padding_medium)),
                 thickness = dimensionResource(R.dimen.thickness_divider),
-                modifier = Modifier.padding(bottom = dimensionResource(R.dimen.padding_medium))
+                color = DividerDefaults.color
             )
         }
     }
@@ -128,11 +133,18 @@ fun MenuScreenButtonGroup(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
     ){
-        OutlinedButton(modifier = Modifier.weight(1f), onClick = onCancelButtonClicked) {
+        OutlinedButton(
+            modifier = Modifier
+                .weight(1f)
+                .testTag(stringResource(R.string.cancel)),
+            onClick = onCancelButtonClicked
+        ) {
             Text(stringResource(R.string.cancel).uppercase())
         }
         Button(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .testTag(stringResource(R.string.next)),
             // the button is enabled when the user makes a selection
             enabled = selectedItemName.isNotEmpty(),
             onClick = onNextButtonClicked
